@@ -1,94 +1,158 @@
 package assignments.ex1;
-import java.util.Scanner;
-import static jdk.internal.org.jline.utils.Colors.s;
 
-/**
- * This class represents a simple solution for Ex1.
- */
 public class Ex1 {
 
-
-    /**
-     * Convert the given number (num) to a decimal representation (as int).
-     * It the given number is not in a valid format returns -1.
-     * @param num a String representing a number in basis [2,16]
-     * @return
-     */
-    }
-
-    public static int number2Int (String num) {
-        int ans = -1;
-        int len = num.length();
-        if (len >= 3) {
-            int base;
-            int tempBase = 0;
-            base = num.charAt(len - 1);
-            for (int i = 0; i < (len - 2); i++ ){
-                if(num.charAt(i) > base)
-                    return ans
-                tempBase = tempBase + num.charAt(i) * (int)Math.pow(base, len - 1 - i);
+    public static boolean isNumber(String num) {
+        //first checks of the input
+        if (num == null || num.isEmpty() || num.length() <3) {
+            return false;
+        }
+        // make sure b is in right place
+        int bPlace = num.indexOf('b');
+        if (bPlace <= 0 || bPlace == num.length() - 1) {
+            return false;
+        }
+        // figure out what base is the input
+        char baseChar = num.charAt(bPlace + 1);
+        int base;
+        if (baseChar >= 'A' && baseChar <= 'G') {
+            base = baseChar - 'A' + 10; //convert A-G to 10-Hexa
+        } else if (baseChar >= '2' && baseChar <= '9') {
+            base = baseChar - '0';  //convert '2' - '9' to 2-9
+        } else {
+            return false;
+        }
+        //check the digits before 'b'
+    String numBefore = num.substring(0, bPlace);
+        for (char digit : numBefore.toCharArray()) {
+            int digitValue;
+            if ( digit >= '0' && digit <= '9') {
+                digitValue = digit - '0';
+            } else if (digit >= 'A' && digit <= 'F') {
+                digitValue = digit - 'A' + 10;
+            } else {
+                return false;
             }
-            ans = tempBase;
+            //check if digits are valid in this base
+            if (digitValue >= base) {
+                return false;
+            }
+        }
+            boolean ans = true;
         return ans;
     }
-    /**
-     * This static function checks if the given String (g) is in a valid "number" format.
-     * @param a a String representing a number
-     * @return true iff the given String is in a number format
-     */
-    public static boolean isNumber(String a) {
-        if (num)
-        boolean ans = true;
-        // add your code here
+}
 
-
-        ////////////////////
-        return ans;
+public static int number2Int (String num) {
+    // check validity using isNumber function
+    if (!Ex1.isNumber(num)) {
+        return -1;
     }
+    // work through regular int - without 'b'
+    int bPlace = num.indexOf('b');
+    if (bPlace == -1) {
+        try {
+            return Integer.parseInt(num);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+    // get the number part and base
+    String numBefore = num.substring(0, bPlace);
+    char baseChar = num.charAt(bPlace + 1);
+    int base;
 
-    /**
-     * Calculate the number representation (in basis base)
-     * of the given natural number (represented as an integer).
-     * If num<0 or base is not in [2,16] the function should return "" (the empty String).
-     * @param num the natural number (include 0).
-     * @param base the basis [2,16]
-     * @return a String representing a number (in base) equals to num, or an empty String (in case of wrong input).
-     */
+    if (baseChar >= 'A' && baseChar <= 'G') {
+        base = baseChar - 'A' + 10;
+    } else {
+        base = baseChar - '0';
+    }
+    // convert to decimal
+    int result = 0;
+    for (int i = 0; i < numBefore.length(); i++) {
+        char digit = numBefore.charAt(i);
+        int digitValue;
+
+        if (digit >= '0' && digit <= '9') {
+            digitValue = digit - '0';
+        } else {
+            // convert A-F to 10-15
+            digitValue = digit - 'A' + 10;
+        }
+        //for each digit- multiply current result by base and add new digit
+        result = result * base + digitValue;
+    }
+    return result;
+}
+
+   // check if inputs are valid- new function
     public static String int2Number(int num, int base) {
-        String ans = "";
-        // add your code here
+        if (num < 0 || base < 2 || base > 16) {
+            return ""; // return empty string for invalid input
+        }
+        // handle special case of 0
+        if (num == 0) {
+            // return "0b" plus the base
+            return "0b" + (base <= 9 ? base : (char) ('A' + (base - 10)));
+        }
+        // convert number to wanted base
+        StringBuilder result = new StringBuilder();
+        int tempNum = num;
 
-        ////////////////////
-        return ans;
+        while (tempNum > 0) {
+            int digit = tempNum % base;
+            // convert digit to character
+            char digitChar;
+            if (digit < 10) {
+                digitChar = (char) ('0' + digit); // 0-9
+            } else {
+                digitChar = (char) ('A' + (digit - 10)); // A-F
+            }
+
+            result.insert(0, digitChar);
+            // divide number by base
+            tempNum /= base;
+        }
+        // add the 'b' and base indicator
+        result.append('b');
+        if (base <= 9) {
+            result.append(base);
+        } else {
+            result.append((char) ('A' + (base - 10)));
+        }
+        return result.toString();
     }
 
-    /**
-     * Checks if the two numbers have the same value.
-     * @param n1 first number
-     * @param n2 second number
-     * @return true iff the two numbers have the same values.
-     */
     public static boolean equals(String n1, String n2) {
-        boolean ans = true;
-        // add your code here
-
-        ////////////////////
-        return ans;
+        // convert both numbers to decimal using number2Int
+        int val1 = number2Int(n1);
+        int val2 = int2Number(n2);
+        // if either conversion returned -1, they're invalid
+        if (val1 == -1 || val2 == -1) {
+            return false;
+        }
+        // compare the decimal values
+        return val1 == val2;
     }
 
-    /**
-     * This static function search for the array index with the largest number (in value).
-     * In case there are more than one maximum - returns the first index.
-     * Note: you can assume that the array is not null and is not empty, yet it may contain null or none-valid numbers (with value -1).
-     * @param arr an array of numbers
-     * @return the index in the array in with the largest number (in value).
-     *
-     */
-    public static int maxIndex(String[] arr) {
-        int ans = 0;
-        // add your code here
 
-        ////////////////////
-        return ans;
+    public static int maxIndex(String[] arr) {
+        // check empty or null array
+        if (arr == null || arr.length == 0){
+          return 0;
+      }
+        // start with first element
+        int maxIndex =0;
+      int maxValue = number2Int(arr[0]);
+        // compare with rest of array
+      for (int i = 1; i < arr.length; i++){
+          int currentValue= number2Int(arr[i]);
+          // update max if current value is larger
+          if (currentValue > maxValue) {
+              maxValue = currentValue;
+              maxIndex = i;
+          }
+      }
+        return maxIndex;
     }
 }

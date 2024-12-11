@@ -1,16 +1,12 @@
 package assignments.ex1;
 import java.util.Scanner;
 
-/**
- * Intro2CS, Ex1 - very basic "main template"
- * Make sure your implementation of this main performs as the Ex1Sol.jar solution implement all needed functions.
- *
- */
 public class Ex1Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("enter a string in the format: 123b4");
+        sc.useDelimiter("\\n");
         String num1 = "", num2="", quit = "quit";
+
         while (!num1.equals(quit) && !num2.equals(quit)) {
             System.out.println();
             System.out.println("Ex1 class solution:");
@@ -23,6 +19,17 @@ public class Ex1Main {
                 System.out.println("num1= " + num1 + "is number: " + isValid1 + " , value: " + value1);
 
                 // add your code here
+                if (!isValid1) {
+                    System.out.println("Error: num1 is in the wrong format (" + num1 + ")");
+                    continue;
+                }
+                System.out.println("Enter a string as number#2 (or \"quit\" to end the program): ");
+                num2 = sc.next();
+
+                if (!num2.equals("quit")) {
+                    boolean isValid2 = Ex1.inNumber(num2);
+                    int value2 = Ex1.number2int(num2);
+                }
 
                 /////////////////////
             }
