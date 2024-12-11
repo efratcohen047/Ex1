@@ -4,20 +4,9 @@ import static jdk.internal.org.jline.utils.Colors.s;
 
 /**
  * This class represents a simple solution for Ex1.
- * As defined here: https://docs.google.com/document/d/1AJ9wtnL1qdEs4DAKqBlO1bXCM6r6GJ_J/r/edit/edit
- * In this assignment, we will design a number formatting converter and calculator.
- * In general, we will use Strings as numbers over basis of binary till Hexa.
- * [2-16], 10-16 are represented by A,B,..G.
- * The general representation of the numbers is as a String with the following format:
- * <number><b><base> e.g., “135bA” (i.e., “135”, as 10 is the default base), “100111b2”, “12345b6”,”012b5”, “123bG”, “EFbG”.
- * The following are NOT in the format (not a valid number):
- * “b2”, “0b1”, “123b”, “1234b11”, “3b3”, “-3b5”, “3 b4”, “GbG”, "", null,
- * You should implement the following static functions:
  */
 public class Ex1 {
-    public void setScanner(var scanner) {
-        this.scanner = scanner;
-    }
+
 
     /**
      * Convert the given number (num) to a decimal representation (as int).
@@ -25,16 +14,21 @@ public class Ex1 {
      * @param num a String representing a number in basis [2,16]
      * @return
      */
-
-    var scanner = new scanner(){
-
     }
 
-    public static int number2Int(String num) {
+    public static int number2Int (String num) {
         int ans = -1;
-        // add your code here
-
-        ////////////////////
+        int len = num.length();
+        if (len >= 3) {
+            int base;
+            int tempBase = 0;
+            base = num.charAt(len - 1);
+            for (int i = 0; i < (len - 2); i++ ){
+                if(num.charAt(i) > base)
+                    return ans
+                tempBase = tempBase + num.charAt(i) * (int)Math.pow(base, len - 1 - i);
+            }
+            ans = tempBase;
         return ans;
     }
     /**
