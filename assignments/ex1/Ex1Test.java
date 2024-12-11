@@ -1,4 +1,5 @@
 package assignments.ex1;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,6 +42,11 @@ public class Ex1Test {
         @Test
         void maxIndexTest() {
             // implement this test
+        }
+        @Test
+          void isNumber()
+        {
+            System.out.println(Ex1.isNumber("567"));
         }
 
         // Add additional test functions - test as much as you can.
