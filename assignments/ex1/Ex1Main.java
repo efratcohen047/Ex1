@@ -1,11 +1,9 @@
 package assignments.ex1;
-
 import java.util.Scanner;
 
 public class Ex1Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        sc.useDelimiter("\\n");
         String num1 = "", num2="", quit = "quit";
 
         while (!num1.equals(quit) && !num2.equals(quit)) {
@@ -14,7 +12,7 @@ public class Ex1Main {
 
             // Get first number from user
             System.out.println("Enter a string as number#1 (or \"quit\" to end the program): ");
-            num1 = sc.next();
+            num1 = sc.nextLine();
 
             if (!num1.equals("quit")) {
                 // Validate first number and convert to integer
